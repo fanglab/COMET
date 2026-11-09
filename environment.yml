@@ -1,0 +1,26 @@
+# Runtime environment for COMET (comet-meth), used for the container build and for
+# installing from source:  conda env create -f environment.yml
+# The numerical stack (python, numpy, pandas, scipy) and modkit are pinned to the versions
+# used to validate the release against the manuscript pipeline, so posteriors reproduce to
+# the last digit.
+name: comet
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python =3.10
+  - pysam >=0.21
+  - numpy =1.26.4
+  - pandas =2.1.1
+  - scipy =1.11.3
+  - matplotlib-base =3.8   # comet assign plots
+  - mscorefonts           # Arial for the plots
+  - samtools >=1.15
+  - bedtools >=2.29
+  - htslib >=1.15        # bgzip, tabix
+  - ont-modkit =0.3.1    # ONT input; version used for the manuscript
+  # comet dmr (version used for the manuscript)
+  - metilene =0.2.9
+  - perl                 # metilene_input.pl
+  - gawk
+  - coreutils

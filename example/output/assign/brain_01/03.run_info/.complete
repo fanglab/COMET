@@ -1,0 +1,1 @@
+comet assign --platform pacbio --tissue brain --assign-thres 0.65 --threads 16 --bam data/assign/brain_01.bam --sample brain_01 --out output/assign/brain_01 --no-plot

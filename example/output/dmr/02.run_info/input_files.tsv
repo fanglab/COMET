@@ -1,0 +1,7 @@
+sample	group	file
+brain_deep_AD_1.Microglia.CG	target	example/data/dmr/brain_deep_AD_1.Microglia.CG.bed.gz
+brain_deep_AD_2.Microglia.CG	target	example/data/dmr/brain_deep_AD_2.Microglia.CG.bed.gz
+brain_deep_MCI_1.Microglia.CG	background	example/data/dmr/brain_deep_MCI_1.Microglia.CG.bed.gz
+brain_deep_MCI_2.Microglia.CG	background	example/data/dmr/brain_deep_MCI_2.Microglia.CG.bed.gz
+brain_deep_NCI_1.Microglia.CG	background	example/data/dmr/brain_deep_NCI_1.Microglia.CG.bed.gz
+brain_deep_NCI_2.Microglia.CG	background	example/data/dmr/brain_deep_NCI_2.Microglia.CG.bed.gz

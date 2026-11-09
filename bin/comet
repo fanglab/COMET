@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# COMET: Cell-of-Origin from METhylation -- command dispatcher.
+set -euo pipefail
+
+VERSION=1.1.0-brain
+BIN=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)
+export COMET_VERSION=$VERSION
+
+usage() {
+cat <<USAGE
+COMET v$VERSION -- Cell-of-Origin from METhylation for long-read (PacBio HiFi / ONT) data
+
+Usage: comet <command> [options]
+
+Commands:
+  assign   assign reads to cell types and split the sample into cell-type BAM / per-site BED
+  dmr      call differentially methylated regions between two groups of per-site BED files
+           (metilene), e.g. one cell type across donor groups
+  test     check the installation: tools, then comet assign on brain test data
+           (downloaded from Zenodo) compared with the expected results
+
+This version includes the brain reference panel only; blood and colon will be added upon publication.
+
+Run 'comet <command> --help' for the options of each command.
+  -h, --help     show this help
+  -v, --version  show version
+USAGE
+}
+
+case ${1:-} in
+  assign) shift; exec bash "$BIN/comet_cmd_assign.sh" "$@" ;;
+  dmr)    shift; exec bash "$BIN/comet_cmd_dmr.sh" "$@" ;;
+  test)   shift; exec bash "$BIN/comet_cmd_test.sh" "$@" ;;
+  -v|--version) echo "comet $VERSION" ;;
+  -h|--help) usage ;;
+  "") usage; exit 1 ;;
+  -*) echo "ERROR: a command is needed first, e.g. 'comet assign $*' (see comet --help)" >&2; exit 1 ;;
+  *) echo "ERROR: unknown command '$1' (use assign, dmr or test; see comet --help)" >&2; exit 1 ;;
+esac

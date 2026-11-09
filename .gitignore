@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+dev/
+# example: BAMs and per-read / cell-type outputs are distributed on Zenodo
+example/data/assign/
+example/output/assign/*/01.cell_type_assignment/

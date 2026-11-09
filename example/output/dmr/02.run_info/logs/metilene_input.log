@@ -1,0 +1,8 @@
+[WARNING]	Mon Nov 9, 1:42:3, 2026	Input files need to be SORTED, i.e., use "bedtools sort -i file >file.sorted"
+[INFO]	Mon Nov 9, 1:42:3, 2026	Checking flags
+[INFO]	Mon Nov 9, 1:42:3, 2026	Write metilene input to example/output/dmr/tmp/metilene.input
+
+*****
+
+[BASIC CALL:] metilene_executable -t 4 -a AD_Microglia -b MCI_NCI_Microglia example/output/dmr/tmp/metilene.input >out.file
+Please adjust executable of metilene, number of threads (-t) and names of groups (-a, -b). For further parameters: metilene_executable --help
