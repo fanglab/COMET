@@ -8,7 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follo
 
 COMET 1.1.0 with the brain reference panel.
 
-- `comet assign` uses the brain reference panel (6 cell types; `--tissue brain`, the default).
+- `comet assign` uses the brain reference panel (6 cell types).
 - Example data and `comet test`: three postmortem brain PacBio HiFi samples (`brain_01`,
   `brain_02`, `brain_03`, 0.5X) and the brain reference panel, downloaded from Zenodo
   (DOI 10.5281/zenodo.24064938).

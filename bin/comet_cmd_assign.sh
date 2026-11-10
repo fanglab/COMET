@@ -14,6 +14,8 @@ Usage:
   comet assign --platform {pacbio,ont} --bam SAMPLE.bam \\
         --assign-thres 0.65 --out OUT_DIR [options]
 
+Reference panel: brain (K=6): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
+
 Required:
   --platform STR        pacbio | ont
   --bam FILE[,FILE..]   aligned, coordinate-sorted, indexed modBAM (MM/ML tags; hg38, chr1..chr22);
@@ -24,9 +26,6 @@ Required:
   --fasta FILE          reference genome FASTA (required for --platform ont, used by modkit)
 
 Optional:
-  --tissue STR          reference panel [brain]
-                          brain (K=6): Exc_neuron, Inh_neuron, Astrocyte, Microglia,
-                                       Oligodendrocyte, OPC
   --output-format STR   cell-type outputs: bam | bed-call | both [both]
                           bam      reads of each cell type as an indexed BAM
                           bed-call per-site calls of each read set (bgzipped, tabix-indexed):
@@ -94,7 +93,6 @@ while [ $# -gt 0 ]; do
   esac
   case $1 in
     --platform) PLATFORM=$2; shift 2 ;;
-    --tissue) TISSUE=$2; shift 2 ;;
     --bam) BAM=$2; shift 2 ;;
     --ref-panel) REF=$2; shift 2 ;;
     --ref-panel-dir) REF_DIR=$2; shift 2 ;;

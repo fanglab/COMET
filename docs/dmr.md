@@ -45,7 +45,6 @@ Differences are reported as target − background.
 | `--background` | required | background group files |
 | `--dmr-diff` | required | minimum \|methylation difference\| (fraction, e.g. 0.3) |
 | `--out` | required | output directory |
-| `--dmr-tool` | metilene | DMR caller; metilene is the only one in this version |
 | `--dmr-level` | group | `group`: group means differ by ≥ `--dmr-diff`. `individual`: also every target file differs from every background file by ≥ `--dmr-diff`, in the same direction |
 | `--target-name`, `--background-name` | target, background | group labels in outputs |
 | `--min-cpg` | 5 | minimum CpGs in a DMR |

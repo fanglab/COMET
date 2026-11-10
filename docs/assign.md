@@ -45,7 +45,7 @@ comet assign --platform pacbio --assign-thres 0.65 \
     5hmCH are written as per-site BEDs. COMET checks the BAM first and stops if a requested
     modification is not present.
 - **Reference panel:**
-  - **Built-in (brain, the default `--tissue`):** download it from Zenodo (see
+  - **Built-in (brain):** download it from Zenodo (see
     [Installation](../README.md#installation)) and set `COMET_REF_PANEL_DIR` or `--ref-panel-dir`.
     - brain (6 cell types): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
 - **Reference FASTA (`--fasta`):** needed for ONT only (used by modkit).
@@ -59,7 +59,6 @@ comet assign --platform pacbio --assign-thres 0.65 \
 | `--assign-thres` | required | minimum confidence (posterior θ) for a read to be assigned to a cell type; recommended from our simulations: 0.65 for brain |
 | `--out` | required | output directory |
 | `--fasta` | | reference FASTA (required for `--platform ont`) |
-| `--tissue` | brain | reference panel |
 | `--output-format` | both | `bam` (reads of each cell type), `bed-call` (per-site calls of each read set) or `both` |
 | `--ont-mods` | 5mCG | ONT: modifications written as per-site BEDs (5mCG, 5hmCG, 5mCH, 5hmCH). Read assignment always uses CpG 5mC (+ 5hmC if present) |
 | `--ml-cutoff` | 180 | methylation call confidence cutoff τ0 on the 0–255 ML scale (paper: 180) |

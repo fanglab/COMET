@@ -27,7 +27,6 @@ Required:
   --out DIR             output directory
 
 Optional:
-  --dmr-tool STR        DMR caller: metilene [metilene]
   --dmr-level STR       group | individual [group]
                           group       the group means differ by >= --dmr-diff
                           individual  also every target file differs from every background file
@@ -71,7 +70,6 @@ while [ $# -gt 0 ]; do
     --target) TARGET=$2; shift 2 ;;
     --background) BACKGROUND=$2; shift 2 ;;
     --out) OUT=$2; shift 2 ;;
-    --dmr-tool) TOOL=$2; shift 2 ;;
     --dmr-level) LEVEL=$2; shift 2 ;;
     --target-name) TNAME=$2; shift 2 ;;
     --background-name) BNAME=$2; shift 2 ;;
@@ -91,8 +89,6 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-TOOL=$(echo "$TOOL" | tr '[:upper:]' '[:lower:]')
-case $TOOL in metilene) ;; *) die "--dmr-tool: only metilene is supported in this version" ;; esac
 LEVEL=$(echo "$LEVEL" | tr '[:upper:]' '[:lower:]')
 case $LEVEL in group|individual) ;; *) die "--dmr-level must be group or individual" ;; esac
 [ -n "$TARGET" ] || die "--target is required"
