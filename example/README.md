@@ -2,7 +2,6 @@
 
 Three small postmortem brain PacBio HiFi data sets that run `comet assign` in ~5 min with 16 threads,
 and per-site CpG BEDs of six deeply sequenced postmortem brain samples for `comet dmr` (seconds).
-The blood and colon examples will be added upon publication.
 
 ```bash
 bash example/download_example_data.sh --ref-panel-dir ref_panel   # example BAMs + brain panel from Zenodo

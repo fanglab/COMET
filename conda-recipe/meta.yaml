@@ -58,8 +58,6 @@ about:
     COMET (Cell-of-Origin from METhylation) assigns individual long reads from bulk tissue to
     their cell type of origin using per-read CpG methylation and a cell-type reference panel,
     and outputs cell-type BAMs, per-site methylation calls and cell-type composition.
-    This version includes the brain reference panel only; blood and colon will be added upon
-    publication.
 
 extra:
   recipe-maintainers:

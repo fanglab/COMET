@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Download the COMET example BAMs (and optionally the brain reference panel) from Zenodo.
-# This version: brain only; the blood and colon reference panels will be added upon publication.
 #
 # usage: bash download_example_data.sh [--ref-panel-dir DIR] [--panels-only]
 #   example BAMs           -> example/data/assign/  (brain_01, brain_02, brain_03)
@@ -52,6 +51,6 @@ fi
 if [ -n "$PANEL_DIR" ]; then
   mkdir -p "$PANEL_DIR"
   for t in $PANELS; do get $t.atlas.bed.gz "$PANEL_DIR"; get $t.atlas.bed.gz.tbi "$PANEL_DIR"; done
-  echo "reference panels in $PANEL_DIR: export COMET_REF_PANEL_DIR=$PANEL_DIR"
+  echo "reference panel in $PANEL_DIR: export COMET_REF_PANEL_DIR=$PANEL_DIR"
 fi
 [ "$BAMS" == 1 ] && echo "done: example BAMs in $(pwd)/data/assign" || echo "done"

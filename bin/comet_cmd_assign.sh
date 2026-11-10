@@ -11,17 +11,11 @@ cat <<EOF
 comet assign (COMET v$VERSION) -- assign long reads to their cell type of origin from CpG methylation
 
 Usage:
-  comet assign --platform {pacbio,ont} --tissue brain --bam SAMPLE.bam \\
+  comet assign --platform {pacbio,ont} --bam SAMPLE.bam \\
         --assign-thres 0.65 --out OUT_DIR [options]
-
-This version includes the brain reference panel only. The blood and colon reference panels
-and their code will be added upon publication.
 
 Required:
   --platform STR        pacbio | ont
-  --tissue STR          reference panel: brain (blood and colon will be added upon publication)
-                          brain (K=6): Exc_neuron, Inh_neuron, Astrocyte, Microglia,
-                                       Oligodendrocyte, OPC
   --bam FILE[,FILE..]   aligned, coordinate-sorted, indexed modBAM (MM/ML tags; hg38, chr1..chr22);
                         several samples: comma-separated BAMs or a text file with one BAM per line
   --assign-thres FLOAT  posterior cutoff theta for assigning a read
@@ -30,6 +24,9 @@ Required:
   --fasta FILE          reference genome FASTA (required for --platform ont, used by modkit)
 
 Optional:
+  --tissue STR          reference panel [brain]
+                          brain (K=6): Exc_neuron, Inh_neuron, Astrocyte, Microglia,
+                                       Oligodendrocyte, OPC
   --output-format STR   cell-type outputs: bam | bed-call | both [both]
                           bam      reads of each cell type as an indexed BAM
                           bed-call per-site calls of each read set (bgzipped, tabix-indexed):
@@ -81,7 +78,7 @@ die() { echo "ERROR: $*" >&2; exit 1; }
 log() { echo "[$(date '+%F %T')] $*" >&2; }
 
 # ---------------------------------------------------------------- arguments
-PLATFORM= TISSUE= BAM= REF= REF_DIR=${COMET_REF_PANEL_DIR:-} ASSIGN_THRES= OUT= FASTA=
+PLATFORM= TISSUE=brain BAM= REF= REF_DIR=${COMET_REF_PANEL_DIR:-} ASSIGN_THRES= OUT= FASTA=
 ML_CUTOFF=180 THREADS=4 SAMPLE= CELL_TYPES= MIN_CPG=5 MIN_READ_LEN= CHUNK_SIZE=
 NO_LINEAGE=0 LINEAGE_THRES=0.65 LINEAGE_MARGIN=0.10 NO_PN_CAL=0 USER_PN_TABLE= HMC_CUTOFF=225
 PILEUP_THRES=0.70 CH_PILEUP_THRES=0.95 MODS=5mCG MODKIT=modkit OUTPUT_FORMAT=both KEEP_TMP=0 STEP=all CHUNK_ID=
@@ -137,13 +134,11 @@ PLATFORM=$(echo "$PLATFORM" | tr '[:upper:]' '[:lower:]')
 [ "$PLATFORM" == "pacbio" ] || [ "$PLATFORM" == "ont" ] || die "--platform must be pacbio or ont"
 [ -n "$BAM" ] || die "--bam is required"
 TISSUE=$(echo "$TISSUE" | tr '[:upper:]' '[:lower:]')
-[ -n "$TISSUE" ] || die "--tissue is required (brain)"
 LINEAGE_LIST=
 case $TISSUE in
   brain) DEF_TYPES=Exc_neuron,Inh_neuron,Astrocyte,Microglia,Oligodendrocyte,OPC
          [ "$NO_LINEAGE" == "1" ] || LINEAGE_LIST="Neuron=1,2 Macroglia=3,5,6" ;;
-  blood|colon) die "--tissue $TISSUE: this version includes the brain panel only; blood and colon will be added upon publication" ;;
-  *) die "--tissue must be brain (blood and colon will be added upon publication)" ;;
+  *) die "--tissue must be brain" ;;
 esac
 if [ "$TISSUE" != "other" ]; then
   [ -z "$REF" ] || die "--ref-panel is not available in this version (the brain panel comes from --ref-panel-dir)"

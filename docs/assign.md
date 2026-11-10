@@ -13,13 +13,10 @@ each cell type and plots of both.
 - [Parallel execution](#parallel-execution)
 - [Example: three postmortem brain samples](#example-three-postmortem-brain-samples)
 
-> **Note.** This version includes the brain reference panel only. The blood and colon
-> reference panels, their code and examples will be added upon publication.
-
 ## Usage
 
 ```bash
-comet assign --platform {pacbio,ont} --tissue brain --bam SAMPLE.bam \
+comet assign --platform {pacbio,ont} --bam SAMPLE.bam \
       --assign-thres 0.65 --out OUT_DIR [options]
 ```
 
@@ -27,15 +24,15 @@ More examples:
 
 ```bash
 # PacBio HiFi, brain
-comet assign --platform pacbio --tissue brain --bam sample.bam --assign-thres 0.65 \
+comet assign --platform pacbio --bam sample.bam --assign-thres 0.65 \
       --threads 16 --out results/sample
 
 # ONT, brain, also write 5hmC at CpGs
-comet assign --platform ont --tissue brain --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
+comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
       --ont-mods 5mCG,5hmCG --threads 16 --out results/sample
 
 # several samples in one call
-comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
+comet assign --platform pacbio --assign-thres 0.65 \
       --bam brain_01.bam,brain_02.bam --threads 16 --out results/brain
 ```
 
@@ -48,10 +45,9 @@ comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
     5hmCH are written as per-site BEDs. COMET checks the BAM first and stops if a requested
     modification is not present.
 - **Reference panel:**
-  - **Built-in (`--tissue brain`):** download it from Zenodo (see
+  - **Built-in (brain, the default `--tissue`):** download it from Zenodo (see
     [Installation](../README.md#installation)) and set `COMET_REF_PANEL_DIR` or `--ref-panel-dir`.
     - brain (6 cell types): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
-    - The blood and colon panels will be added upon publication.
 - **Reference FASTA (`--fasta`):** needed for ONT only (used by modkit).
 
 ## Parameters
@@ -59,11 +55,11 @@ comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
 | Option | Default | |
 |---|---|---|
 | `--platform` | required | `pacbio` or `ont` |
-| `--tissue` | required | `brain` (blood and colon will be added upon publication) |
 | `--bam` | required | modBAM; several samples: comma-separated, or a text file with one BAM per line |
 | `--assign-thres` | required | minimum confidence (posterior θ) for a read to be assigned to a cell type; recommended from our simulations: 0.65 for brain |
 | `--out` | required | output directory |
 | `--fasta` | | reference FASTA (required for `--platform ont`) |
+| `--tissue` | brain | reference panel |
 | `--output-format` | both | `bam` (reads of each cell type), `bed-call` (per-site calls of each read set) or `both` |
 | `--ont-mods` | 5mCG | ONT: modifications written as per-site BEDs (5mCG, 5hmCG, 5mCH, 5hmCH). Read assignment always uses CpG 5mC (+ 5hmC if present) |
 | `--ml-cutoff` | 180 | methylation call confidence cutoff τ0 on the 0–255 ML scale (paper: 180) |
@@ -176,7 +172,7 @@ bash example/run_example.sh 16                                     # ~5 min with
 `run_example.sh` runs, from `example/`:
 
 ```bash
-comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
+comet assign --platform pacbio --assign-thres 0.65 \
       --bam data/assign/brain_01.bam,data/assign/brain_02.bam,data/assign/brain_03.bam \
       --threads 16 --out output/assign
 ```

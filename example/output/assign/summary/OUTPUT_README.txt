@@ -1,5 +1,5 @@
-COMET v1.1.0-brain summary of 3 samples (2026-11-09 01:42:03)
-command: comet assign --platform pacbio --tissue brain --assign-thres 0.65 --bam data/assign/brain_01.bam\,data/assign/brain_02.bam\,data/assign/brain_03.bam --threads 16 --out output/assign
+COMET v1.1.0-brain summary of 3 samples (2026-11-09 19:09:42)
+command: comet assign --platform pacbio --assign-thres 0.65 --bam data/assign/brain_01.bam\,data/assign/brain_02.bam\,data/assign/brain_03.bam --threads 16 --out output/assign
 
 Per-sample results: <sample>/ (file guide: <sample>/03.run_info/OUTPUT_README.txt). Samples:
   brain_01

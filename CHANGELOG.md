@@ -6,10 +6,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follo
 
 ## [1.1.0-brain] - 2026-11-08
 
-COMET 1.1.0 with the brain reference panel only.
+COMET 1.1.0 with the brain reference panel.
 
-- `comet assign --tissue` accepts `brain`. The blood and colon reference panels, their code and
-  examples will be added upon publication.
+- `comet assign` uses the brain reference panel (6 cell types; `--tissue brain`, the default).
 - Example data and `comet test`: three postmortem brain PacBio HiFi samples (`brain_01`,
   `brain_02`, `brain_03`, 0.5X) and the brain reference panel, downloaded from Zenodo
   (DOI 10.5281/zenodo.24064938).

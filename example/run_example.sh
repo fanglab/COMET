@@ -4,7 +4,6 @@
 #   brain_01, brain_02, brain_03 : three postmortem brain samples
 #   data/dmr/ : per-site CpG BEDs (chr15:73,500,000-75,500,000) of the six brain cell types of six
 #               deep-sequenced postmortem brain samples, two per group (AD, MCI, NCI)
-# The blood and colon examples will be added upon publication.
 #
 # What it shows:
 #   - comet assign: cell-type composition and cell-type methylation of the three samples
@@ -24,7 +23,7 @@ done
 
 # 1. cell-type assignment of the three samples (brain panel: Exc_neuron, Inh_neuron, Astrocyte,
 #    Microglia, Oligodendrocyte, OPC; --assign-thres 0.65)
-comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
+comet assign --platform pacbio --assign-thres 0.65 \
       --bam data/assign/brain_01.bam,data/assign/brain_02.bam,data/assign/brain_03.bam \
       --threads $T --out output/assign
 #    -> output/assign/<sample>/ per sample; output/assign/summary/ combined tables and plots:

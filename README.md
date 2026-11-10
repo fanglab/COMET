@@ -11,9 +11,6 @@ cell-type reference methylation panel.
 
 Built-in reference panel: **brain** (6 cell types).
 
-> **Note.** This version includes the brain reference panel and brain example data only.
-> The blood and colon reference panels, their code and examples will be added upon publication.
-
 ## Installation
 
 **Bioconda**
@@ -35,9 +32,8 @@ conda env create -f COMET/environment.yml && conda activate comet
 export PATH=$PWD/COMET/bin:$PATH
 ```
 
-**Download reference panels** (hg38, brain, 613 MB; Zenodo DOI:
-[10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) into one folder and point COMET to it
-(the blood and colon panels will be added upon publication):
+**Download the reference panel** (hg38, brain, 613 MB; Zenodo DOI:
+[10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) into one folder and point COMET to it:
 ```bash
 bash COMET/example/download_example_data.sh --ref-panel-dir /path/to/ref_panel --panels-only
 # or download brain.atlas.bed.gz and .tbi from the Zenodo page
@@ -77,19 +73,18 @@ comet test --threads 16 --out comet_test      # all steps; downloads and outputs
 
 ```bash
 # Assign cell type for PacBio HiFi brain data
-comet assign --platform pacbio --tissue brain --bam sample.bam --assign-thres 0.65 --out output/sample/
+comet assign --platform pacbio --bam sample.bam --assign-thres 0.65 --out output/sample/
 
 # Assign cell type for ONT brain data
-comet assign --platform ont --tissue brain --bam sample.bam --fasta hg38.fa --assign-thres 0.65 --out output/sample/
+comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 --out output/sample/
 
 # Assign cell type for ONT brain data with additional modification calls (5hmC at CpGs)
-comet assign --platform ont --tissue brain --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
+comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
       --ont-mods 5mCG,5hmCG --out output/sample/
 ```
 
 `--assign-thres` sets the minimum confidence for a read to be assigned to a cell type.
-Value recommended from our simulations: **0.65** for brain (the blood and colon values will be
-given with their panels upon publication).
+Value recommended from our simulations: **0.65** for brain.
 
 Run `comet assign --help` or `comet dmr --help` for full usage information.
 
@@ -99,13 +94,12 @@ Run `comet assign --help` or `comet dmr --help` for full usage information.
 
 **Input:** an aligned, coordinate-sorted and indexed modBAM with MM/ML tags (hg38, chr1–chr22):
 PacBio HiFi CCS reads with the `np` tag, or ONT reads from dorado (plus the reference FASTA).
-The reference panel is selected with `--tissue brain` (blood and colon will be added upon
-publication).
+Reads are assigned with the brain reference panel (6 cell types).
 
 **Usage:** one or several samples in one call.
 
 ```bash
-comet assign --platform pacbio --tissue brain --assign-thres 0.65 \
+comet assign --platform pacbio --assign-thres 0.65 \
       --bam brain_01.bam,brain_02.bam,brain_03.bam \
       --threads 16 --out output/brain
 ```

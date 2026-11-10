@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # comet test: check the software environment, then run comet dmr and comet assign on the brain
 # test data and compare the results with the expected ones. Called through the `comet` dispatcher.
-# This version: brain only (blood and colon will be added upon publication).
 set -euo pipefail
 export LC_ALL=C
 
@@ -187,7 +186,7 @@ stop_if_failed "the download"
 
 # ---------------------------------------------------------------- 4. comet assign
 echo; echo "[4/4] comet assign (3 PacBio HiFi brain samples; this takes a few minutes)"
-if comet assign --platform pacbio --tissue brain --assign-thres 0.65 --ref-panel-dir "$REF_DIR" \
+if comet assign --platform pacbio --assign-thres 0.65 --ref-panel-dir "$REF_DIR" \
      --bam "$DATA/brain_01.bam,$DATA/brain_02.bam,$DATA/brain_03.bam" \
      --threads "$THREADS" --out "$OUT/assign" \
      > "$OUT/assign.log" 2>&1; then

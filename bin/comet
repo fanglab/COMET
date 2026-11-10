@@ -16,10 +16,8 @@ Commands:
   assign   assign reads to cell types and split the sample into cell-type BAM / per-site BED
   dmr      call differentially methylated regions between two groups of per-site BED files
            (metilene), e.g. one cell type across donor groups
-  test     check the installation: tools, then comet assign on brain test data
-           (downloaded from Zenodo) compared with the expected results
-
-This version includes the brain reference panel only; blood and colon will be added upon publication.
+  test     check the installation: tools, then comet dmr and comet assign on brain test data
+           compared with the expected results
 
 Run 'comet <command> --help' for the options of each command.
   -h, --help     show this help
