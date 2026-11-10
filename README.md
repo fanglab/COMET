@@ -9,7 +9,6 @@ cell-type reference methylation panel.
 - `comet dmr` calls differentially methylated regions between two groups of per-site BED
   files with metilene, e.g. one cell type across donor groups or one cell type against the others.
 
-Built-in reference panel: **brain** (6 cell types).
 
 ## Installation
 
