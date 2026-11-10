@@ -1,13 +1,12 @@
 {% set name = "comet-meth" %}
 {% set version = "1.1.0" %}
-{% set tag = "v1.1.0-brain" %}   # conda versions cannot contain "-"; this release is tagged v1.1.0-brain
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/fanglab/COMET/archive/refs/tags/{{ tag }}.tar.gz
+  url: https://github.com/fanglab/COMET/archive/refs/tags/v{{ version }}.tar.gz
   sha256: SHA256_OF_RELEASE_TARBALL
 
 build:

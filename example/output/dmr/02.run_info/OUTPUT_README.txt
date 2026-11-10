@@ -1,4 +1,4 @@
-COMET v1.1.0-brain comet dmr output guide
+COMET v1.1.0 comet dmr output guide
 metilene | target 'AD_Microglia' (2 samples) vs background 'MCI_NCI_Microglia' (4 samples)
 Parameters and tool version: 02.run_info/run_parameters.txt; inputs: 02.run_info/input_files.tsv
 

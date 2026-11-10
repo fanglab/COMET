@@ -1,4 +1,4 @@
-COMET v1.1.0-brain output guide
+COMET v1.1.0 output guide
 sample brain_02 | platform pacbio | tissue brain | cell types Exc_neuron,Inh_neuron,Astrocyte,Microglia,Oligodendrocyte,OPC
 Files are prefixed by the sample name. Parameters and tool versions: 03.run_info/run_parameters.txt
 

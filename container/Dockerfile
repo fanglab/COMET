@@ -1,10 +1,10 @@
 # COMET (comet-meth) container: conda environment + COMET scripts.
-# Build from the repository root:  docker build -f container/Dockerfile -t comet-meth:1.1.0-brain .
+# Build from the repository root:  docker build -f container/Dockerfile -t comet-meth:1.1.0 .
 FROM mambaorg/micromamba:1.5.10
 
 LABEL org.opencontainers.image.title="comet-meth" \
       org.opencontainers.image.description="COMET: read-level cell-type assignment for long-read methylation data" \
-      org.opencontainers.image.version="1.1.0-brain" \
+      org.opencontainers.image.version="1.1.0" \
       org.opencontainers.image.licenses="CC-BY-NC-SA-4.0" \
       org.opencontainers.image.source="https://github.com/fanglab/COMET"
 

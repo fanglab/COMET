@@ -20,8 +20,8 @@ conda install -c conda-forge -c bioconda comet-meth
 
 **Container** (Docker)
 ```bash
-docker pull ghcr.io/fanglab/comet-meth:1.1.0-brain
-docker run --rm -v /path/to/data:/data -v /path/to/ref_panel:/ref_panel ghcr.io/fanglab/comet-meth:1.1.0-brain \
+docker pull ghcr.io/fanglab/comet-meth:1.1.0
+docker run --rm -v /path/to/data:/data -v /path/to/ref_panel:/ref_panel ghcr.io/fanglab/comet-meth:1.1.0 \
       comet assign --bam /data/sample.bam ... --out /data/output   # mount every folder read or written
 ```
 
