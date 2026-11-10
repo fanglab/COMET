@@ -36,7 +36,7 @@ export PATH=$PWD/COMET/bin:$PATH
 ```bash
 bash COMET/example/download_example_data.sh --ref-panel-dir /path/to/ref_panel --panels-only
 # or download brain.atlas.bed.gz and .tbi from the Zenodo page
-export COMET_REF_PANEL_DIR=/path/to/ref_panel   # holds brain.atlas.bed.gz(.tbi)
+export COMET_REF_PANEL_DIR=/path/to/ref_panel
 ```
 
 ## Requirements and Test
