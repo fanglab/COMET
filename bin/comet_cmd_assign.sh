@@ -45,8 +45,10 @@ Optional:
                         (e.g. to leave out cell lines or sorted samples)
   --cell-types STR      comma-separated cell-type names in atlas column order
                         [brain cell-type names]
-  --ref-panel-dir DIR   folder holding the built-in reference panels
-                        brain.atlas.bed.gz(.tbi)
+  --ref-panel FILE      reference panel (atlas) BED, e.g. brain.atlas.bed.gz; bgzipped and
+                        tabix-indexed files are used directly, others are indexed once into OUT
+                        [<--ref-panel-dir>/brain.atlas.bed.gz]
+  --ref-panel-dir DIR   folder holding brain.atlas.bed.gz(.tbi), used when --ref-panel is not given
                         [\$COMET_REF_PANEL_DIR, else <install>/share/comet/ref_panel]
   --no-lineage          brain: turn off lineage rescue of unassigned reads (on by default:
                         Neuron = Exc + Inh, Macroglia = Astrocyte + Oligodendrocyte + OPC)
@@ -139,12 +141,15 @@ case $TISSUE in
   *) die "--tissue must be brain" ;;
 esac
 if [ "$TISSUE" != "other" ]; then
-  [ -z "$REF" ] || die "--ref-panel is not available in this version (the brain panel comes from --ref-panel-dir)"
-  [ -n "$REF_DIR" ] || REF_DIR=$(cd "$BIN/.." && pwd)/share/comet/ref_panel
-  REF=$REF_DIR/$TISSUE.atlas.bed.gz
-  [ -e "$REF" ] || die "built-in $TISSUE reference panel not found at $REF
-       download the panels (see README) and pass --ref-panel-dir or set COMET_REF_PANEL_DIR"
-  [ -e "$REF.tbi" ] || [ -e "$REF.csi" ] || die "reference panel index missing: $REF.tbi"
+  if [ -n "$REF" ]; then
+    [ -s "$REF" ] || die "--ref-panel: file not found: $REF"
+  else
+    [ -n "$REF_DIR" ] || REF_DIR=$(cd "$BIN/.." && pwd)/share/comet/ref_panel
+    REF=$REF_DIR/$TISSUE.atlas.bed.gz
+    [ -e "$REF" ] || die "reference panel not found at $REF
+       download it (see README) and pass --ref-panel FILE, --ref-panel-dir DIR or set COMET_REF_PANEL_DIR"
+    [ -e "$REF.tbi" ] || [ -e "$REF.csi" ] || die "reference panel index missing: $REF.tbi"
+  fi
 fi
 [ -n "$CELL_TYPES" ] || CELL_TYPES=$DEF_TYPES
 [ -n "$ASSIGN_THRES" ] || die "--assign-thres is required"

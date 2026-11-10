@@ -33,7 +33,7 @@ comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65
 
 # several samples in one call
 comet assign --platform pacbio --assign-thres 0.65 \
-      --bam brain_01.bam,brain_02.bam --threads 16 --out results/brain
+      --bam brain_01.bam,brain_02.bam --threads 16 --out results
 ```
 
 ## Input
@@ -46,7 +46,7 @@ comet assign --platform pacbio --assign-thres 0.65 \
     modification is not present.
 - **Reference panel:**
   - **Built-in (brain):** download it from Zenodo (see
-    [Installation](../README.md#installation)) and set `COMET_REF_PANEL_DIR` or `--ref-panel-dir`.
+    [Installation](../README.md#installation)) and give it with `--ref-panel`, or set `COMET_REF_PANEL_DIR` / `--ref-panel-dir`.
     - brain (6 cell types): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
 - **Reference FASTA (`--fasta`):** needed for ONT only (used by modkit).
 
@@ -67,7 +67,8 @@ comet assign --platform pacbio --assign-thres 0.65 \
 | `--no-plot` | | do not draw the composition and methylation plots |
 | `--meth-plot-samples` | all | samples shown in the cell-type methylation plot |
 | `--cell-types` | brain names | cell-type names in panel column order |
-| `--ref-panel-dir` | `$COMET_REF_PANEL_DIR` | folder holding `brain.atlas.bed.gz(.tbi)` |
+| `--ref-panel` | `<ref-panel-dir>/brain.atlas.bed.gz` | reference panel (atlas) BED; bgzipped and tabix-indexed files are used directly, others are indexed once into the output folder |
+| `--ref-panel-dir` | `$COMET_REF_PANEL_DIR` | folder holding `brain.atlas.bed.gz(.tbi)`, used when `--ref-panel` is not given |
 | `--no-lineage` | | brain: turn off lineage rescue (Neuron = Exc + Inh; Macroglia = Astrocyte + Oligodendrocyte + OPC) |
 | `--lineage-thres` | 0.65 | summed-posterior cutoff for lineage rescue |
 | `--lineage-margin` | 0.10 | margin over the best outside cell type for lineage rescue |

@@ -100,15 +100,15 @@ Reads are assigned with the brain reference panel (6 cell types).
 ```bash
 comet assign --platform pacbio --assign-thres 0.65 \
       --bam brain_01.bam,brain_02.bam,brain_03.bam \
-      --threads 16 --out output/brain
+      --threads 16 --out output
 ```
 
-**Output:** each sample's results are written to `output/brain/<sample>/`:
+**Output:** each sample's results are written to `output/<sample>/`:
 - **Read assignment:** per-read cell-type posteriors and assignments.
 - **Reads per cell type:** BAMs and per-site methylation BEDs.
 - **Quantification tables:** cell-type composition and genome-wide methylation of each cell type.
 
-`output/brain/summary/` combines the tables and plots of all samples. For example, from three
+`output/summary/` combines the tables and plots of all samples. For example, from three
 postmortem brain samples:
 
 **Cell-type composition** (`summary/all_samples.composition.tsv`, `.pdf/png`): proportions of
