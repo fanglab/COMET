@@ -1,4 +1,4 @@
-COMET v1.1.0  2026-11-09 19:09:43
+COMET v1.1.0  2026-11-10 13:13:32
 command: comet dmr --target data/dmr/brain_deep_AD_1.Microglia.CG.bed.gz\,data/dmr/brain_deep_AD_2.Microglia.CG.bed.gz --target-name AD_Microglia --background data/dmr/brain_deep_MCI_1.Microglia.CG.bed.gz\,data/dmr/brain_deep_MCI_2.Microglia.CG.bed.gz\,data/dmr/brain_deep_NCI_1.Microglia.CG.bed.gz\,data/dmr/brain_deep_NCI_2.Microglia.CG.bed.gz --background-name MCI_NCI_Microglia --dmr-diff 0.2 --dmr-level individual --threads 16 --out output/dmr
 
 dmr_tool           metilene

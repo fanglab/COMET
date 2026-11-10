@@ -11,13 +11,16 @@ cat <<EOF
 comet assign (COMET v$VERSION) -- assign long reads to their cell type of origin from CpG methylation
 
 Usage:
-  comet assign --platform {pacbio,ont} --bam SAMPLE.bam \\
-        --assign-thres 0.65 --out OUT_DIR [options]
-
-Reference panel: brain (K=6): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
+  comet assign --platform {pacbio,ont} --ref-panel TISSUE.atlas.bed.gz --bam SAMPLE.bam \\
+        --assign-thres FLOAT --out OUT_DIR [options]
 
 Required:
   --platform STR        pacbio | ont
+  --ref-panel FILE      cell-type reference panel (atlas) of the tissue: BED with chrom, start, end
+                        and one methylation column per cell type, e.g. brain.atlas.bed.gz from
+                        Zenodo. COMET panels (<tissue>.atlas.bed.gz) are recognised by name and
+                        bring their cell-type names. bgzipped + tabix-indexed files are used
+                        directly; others are compressed and indexed once into OUT_DIR
   --bam FILE[,FILE..]   aligned, coordinate-sorted, indexed modBAM (MM/ML tags; hg38, chr1..chr22);
                         several samples: comma-separated BAMs or a text file with one BAM per line
   --assign-thres FLOAT  posterior cutoff theta for assigning a read
@@ -44,12 +47,9 @@ Optional:
   --meth-plot-samples LIST  samples shown in the cell-type methylation plot [all]
                         (e.g. to leave out cell lines or sorted samples)
   --cell-types STR      comma-separated cell-type names in atlas column order
-                        [brain cell-type names]
-  --ref-panel FILE      reference panel (atlas) BED, e.g. brain.atlas.bed.gz; bgzipped and
-                        tabix-indexed files are used directly, others are indexed once into OUT
-                        [<--ref-panel-dir>/brain.atlas.bed.gz]
-  --ref-panel-dir DIR   folder holding brain.atlas.bed.gz(.tbi), used when --ref-panel is not given
-                        [\$COMET_REF_PANEL_DIR, else <install>/share/comet/ref_panel]
+                        [names of the COMET panel, else CellType_1..K]
+                          brain: Exc_neuron, Inh_neuron, Astrocyte, Microglia,
+                                 Oligodendrocyte, OPC
   --no-lineage          brain: turn off lineage rescue of unassigned reads (on by default:
                         Neuron = Exc + Inh, Macroglia = Astrocyte + Oligodendrocyte + OPC)
   --lineage-thres FLOAT summed-posterior cutoff for lineage rescue [0.65]
@@ -79,7 +79,7 @@ die() { echo "ERROR: $*" >&2; exit 1; }
 log() { echo "[$(date '+%F %T')] $*" >&2; }
 
 # ---------------------------------------------------------------- arguments
-PLATFORM= TISSUE=brain BAM= REF= REF_DIR=${COMET_REF_PANEL_DIR:-} ASSIGN_THRES= OUT= FASTA=
+PLATFORM= TISSUE= BAM= REF= ASSIGN_THRES= OUT= FASTA=
 ML_CUTOFF=180 THREADS=4 SAMPLE= CELL_TYPES= MIN_CPG=5 MIN_READ_LEN= CHUNK_SIZE=
 NO_LINEAGE=0 LINEAGE_THRES=0.65 LINEAGE_MARGIN=0.10 NO_PN_CAL=0 USER_PN_TABLE= HMC_CUTOFF=225
 PILEUP_THRES=0.70 CH_PILEUP_THRES=0.95 MODS=5mCG MODKIT=modkit OUTPUT_FORMAT=both KEEP_TMP=0 STEP=all CHUNK_ID=
@@ -97,7 +97,6 @@ while [ $# -gt 0 ]; do
     --platform) PLATFORM=$2; shift 2 ;;
     --bam) BAM=$2; shift 2 ;;
     --ref-panel) REF=$2; shift 2 ;;
-    --ref-panel-dir) REF_DIR=$2; shift 2 ;;
     --assign-thres) ASSIGN_THRES=$2; shift 2 ;;
     --out) OUT=$2; shift 2 ;;
     --fasta) FASTA=$2; shift 2 ;;
@@ -133,24 +132,16 @@ done
 PLATFORM=$(echo "$PLATFORM" | tr '[:upper:]' '[:lower:]')
 [ "$PLATFORM" == "pacbio" ] || [ "$PLATFORM" == "ont" ] || die "--platform must be pacbio or ont"
 [ -n "$BAM" ] || die "--bam is required"
-TISSUE=$(echo "$TISSUE" | tr '[:upper:]' '[:lower:]')
-LINEAGE_LIST=
+[ -n "$REF" ] || die "--ref-panel is required (e.g. brain.atlas.bed.gz from Zenodo; see README)"
+[ -s "$REF" ] || die "--ref-panel: file not found: $REF"
+# COMET panels are named <tissue>.atlas.bed.gz; other panels use --cell-types or CellType_1..K
+TISSUE=$(basename "$REF" | cut -d. -f1 | tr '[:upper:]' '[:lower:]')
+LINEAGE_LIST= DEF_TYPES=
 case $TISSUE in
   brain) DEF_TYPES=Exc_neuron,Inh_neuron,Astrocyte,Microglia,Oligodendrocyte,OPC
          [ "$NO_LINEAGE" == "1" ] || LINEAGE_LIST="Neuron=1,2 Macroglia=3,5,6" ;;
-  *) die "--tissue must be brain" ;;
+  *) TISSUE=custom ;;
 esac
-if [ "$TISSUE" != "other" ]; then
-  if [ -n "$REF" ]; then
-    [ -s "$REF" ] || die "--ref-panel: file not found: $REF"
-  else
-    [ -n "$REF_DIR" ] || REF_DIR=$(cd "$BIN/.." && pwd)/share/comet/ref_panel
-    REF=$REF_DIR/$TISSUE.atlas.bed.gz
-    [ -e "$REF" ] || die "reference panel not found at $REF
-       download it (see README) and pass --ref-panel FILE, --ref-panel-dir DIR or set COMET_REF_PANEL_DIR"
-    [ -e "$REF.tbi" ] || [ -e "$REF.csi" ] || die "reference panel index missing: $REF.tbi"
-  fi
-fi
 [ -n "$CELL_TYPES" ] || CELL_TYPES=$DEF_TYPES
 [ -n "$ASSIGN_THRES" ] || die "--assign-thres is required"
 [ -n "$OUT" ] || die "--out is required"

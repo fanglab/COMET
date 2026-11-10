@@ -11,11 +11,13 @@
 #     unmethylated in AD microglia and methylated in MCI and NCI microglia);
 #     output/dmr/AD_microglia.tracks.pdf shows the microglia methylation of the six samples there
 #
-# usage: bash download_example_data.sh --ref-panel-dir PANELS   (once: example BAMs + brain panel)
-#        export COMET_REF_PANEL_DIR=PANELS
-#        bash run_example.sh [THREADS]
+# usage: bash download_example_data.sh --panel-dir PANELS   (once: example BAMs + brain panel)
+#        bash run_example.sh PANELS/brain.atlas.bed.gz [THREADS]
 set -euo pipefail
-T=${1:-8}
+[ $# -ge 1 ] || { echo "usage: bash run_example.sh PANELS/brain.atlas.bed.gz [THREADS]" >&2; exit 1; }
+[ -s "$1" ] || { echo "reference panel not found: $1 (run 'bash download_example_data.sh --panel-dir PANELS' first)" >&2; exit 1; }
+PANEL=$(cd "$(dirname "$1")" && pwd)/$(basename "$1")
+T=${2:-8}
 cd "$(dirname "$0")"
 for s in brain_01 brain_02 brain_03; do
   [ -s data/assign/$s.bam ] || { echo "data/assign/$s.bam missing: run 'bash download_example_data.sh' first" >&2; exit 1; }
@@ -23,7 +25,7 @@ done
 
 # 1. cell-type assignment of the three samples (brain panel: Exc_neuron, Inh_neuron, Astrocyte,
 #    Microglia, Oligodendrocyte, OPC; --assign-thres 0.65)
-comet assign --platform pacbio --assign-thres 0.65 \
+comet assign --platform pacbio --ref-panel "$PANEL" --assign-thres 0.65 \
       --bam data/assign/brain_01.bam,data/assign/brain_02.bam,data/assign/brain_03.bam \
       --threads $T --out output/assign
 #    -> output/assign/<sample>/ per sample; output/assign/summary/ combined tables and plots:

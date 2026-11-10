@@ -16,7 +16,6 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER example/data/dmr/ /opt/comet/share/comet/te
 COPY --chown=$MAMBA_USER:$MAMBA_USER LICENSE README.md CHANGELOG.md VERSION /opt/comet/
 
 # reference panels are mounted at run time, e.g. -v /path/to/ref_panel:/ref_panel
-ENV PATH=/opt/comet/bin:/opt/conda/bin:$PATH \
-    COMET_REF_PANEL_DIR=/ref_panel
+ENV PATH=/opt/comet/bin:/opt/conda/bin:$PATH
 
 CMD ["comet", "--help"]

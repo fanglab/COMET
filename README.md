@@ -21,7 +21,8 @@ conda install -c conda-forge -c bioconda comet-meth
 ```bash
 docker pull ghcr.io/fanglab/comet-meth:1.1.0
 docker run --rm -v /path/to/data:/data -v /path/to/ref_panel:/ref_panel ghcr.io/fanglab/comet-meth:1.1.0 \
-      comet assign --bam /data/sample.bam ... --out /data/output   # mount every folder read or written
+      comet assign --ref-panel /ref_panel/brain.atlas.bed.gz --bam /data/sample.bam ... \
+      --out /data/output   # mount every folder read or written
 ```
 
 **From source**
@@ -32,11 +33,10 @@ export PATH=$PWD/COMET/bin:$PATH
 ```
 
 **Download the reference panel** (hg38; Zenodo DOI:
-[10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) into one folder and point COMET to it:
+[10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) and give it to COMET with `--ref-panel`:
 ```bash
-bash COMET/example/download_example_data.sh --ref-panel-dir /path/to/ref_panel --panels-only
+bash COMET/example/download_example_data.sh --panel-dir ref_panel --panels-only   # ref_panel/brain.atlas.bed.gz(.tbi)
 # or download from the Zenodo page
-export COMET_REF_PANEL_DIR=/path/to/ref_panel
 ```
 
 ## Requirements and Test
@@ -57,7 +57,7 @@ everything it needs:
 
 1. Checks the required tools and Python packages and prints their versions.
 2. Runs `comet dmr` on the test BEDs bundled with COMET.
-3. Downloads the test BAMs, plus the brain reference panel if `COMET_REF_PANEL_DIR` holds none,
+3. Downloads the test BAMs and the brain reference panel (unless given with `--ref-panel`)
    from Zenodo and checks their md5 sums.
 4. Runs `comet assign` on the test BAMs.
 
@@ -72,13 +72,13 @@ comet test --threads 16 --out comet_test      # all steps; downloads and outputs
 
 ```bash
 # Assign cell type for PacBio HiFi brain data
-comet assign --platform pacbio --bam sample.bam --assign-thres 0.65 --out output/sample/
+comet assign --platform pacbio --ref-panel brain.atlas.bed.gz --bam sample.bam --assign-thres 0.65 --out output/sample/
 
 # Assign cell type for ONT brain data
-comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 --out output/sample/
+comet assign --platform ont --ref-panel brain.atlas.bed.gz --bam sample.bam --fasta hg38.fa --assign-thres 0.65 --out output/sample/
 
 # Assign cell type for ONT brain data with additional modification calls (5hmC at CpGs)
-comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
+comet assign --platform ont --ref-panel brain.atlas.bed.gz --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
       --ont-mods 5mCG,5hmCG --out output/sample/
 ```
 
@@ -93,12 +93,13 @@ Run `comet assign --help` or `comet dmr --help` for full usage information.
 
 **Input:** an aligned, coordinate-sorted and indexed modBAM with MM/ML tags (hg38, chr1–chr22):
 PacBio HiFi CCS reads with the `np` tag, or ONT reads from dorado (plus the reference FASTA).
-Reads are assigned with the brain reference panel (6 cell types).
+The cell-type reference panel of the tissue is given with `--ref-panel` (e.g. `brain.atlas.bed.gz`,
+6 cell types).
 
 **Usage:** one or several samples in one call.
 
 ```bash
-comet assign --platform pacbio --assign-thres 0.65 \
+comet assign --platform pacbio --ref-panel brain.atlas.bed.gz --assign-thres 0.65 \
       --bam brain_01.bam,brain_02.bam,brain_03.bam \
       --threads 16 --out output
 ```

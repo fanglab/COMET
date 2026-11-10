@@ -1,6 +1,6 @@
-[WARNING]	Mon Nov 9, 19:9:42, 2026	Input files need to be SORTED, i.e., use "bedtools sort -i file >file.sorted"
-[INFO]	Mon Nov 9, 19:9:42, 2026	Checking flags
-[INFO]	Mon Nov 9, 19:9:42, 2026	Write metilene input to example/output/dmr/tmp/metilene.input
+[WARNING]	Tue Nov 10, 13:13:31, 2026	Input files need to be SORTED, i.e., use "bedtools sort -i file >file.sorted"
+[INFO]	Tue Nov 10, 13:13:31, 2026	Checking flags
+[INFO]	Tue Nov 10, 13:13:31, 2026	Write metilene input to example/output/dmr/tmp/metilene.input
 
 *****
 

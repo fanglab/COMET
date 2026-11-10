@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Download the COMET example BAMs (and optionally the brain reference panel) from Zenodo.
 #
-# usage: bash download_example_data.sh [--ref-panel-dir DIR] [--panels-only]
+# usage: bash download_example_data.sh [--panel-dir DIR] [--panels-only]
 #   example BAMs           -> example/data/assign/  (brain_01, brain_02, brain_03)
-#   --ref-panel-dir DIR    also download the brain reference panel (613 MB) into DIR;
-#                          then: export COMET_REF_PANEL_DIR=DIR
-#   --panels-only          with --ref-panel-dir: skip the example BAMs
+#   --panel-dir DIR        also download the brain reference panel (613 MB) into DIR;
+#                          then: comet assign --ref-panel DIR/brain.atlas.bed.gz ...
+#   --panels-only          with --panel-dir: skip the example BAMs
 # Files already present with the right md5 are not downloaded again.
 set -euo pipefail
 RECORD=24064938
@@ -14,13 +14,13 @@ URL=https://zenodo.org/records/$RECORD/files
 PANEL_DIR= PANELS=brain BAMS=1
 while [ $# -gt 0 ]; do
   case $1 in
-    --ref-panel-dir) PANEL_DIR=$2; shift 2 ;;
+    --panel-dir) PANEL_DIR=$2; shift 2 ;;
     --panels-only) BAMS=0; shift ;;
     -h|--help) sed -n '2,10p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 1 ;;
   esac
 done
-[ "$BAMS" == 1 ] || [ -n "$PANEL_DIR" ] || { echo "--panels-only needs --ref-panel-dir" >&2; exit 1; }
+[ "$BAMS" == 1 ] || [ -n "$PANEL_DIR" ] || { echo "--panels-only needs --panel-dir" >&2; exit 1; }
 # panel folder relative to where the script was called from
 [ -z "$PANEL_DIR" ] || { mkdir -p "$PANEL_DIR"; PANEL_DIR=$(cd "$PANEL_DIR" && pwd); }
 cd "$(dirname "$0")"
@@ -51,6 +51,6 @@ fi
 if [ -n "$PANEL_DIR" ]; then
   mkdir -p "$PANEL_DIR"
   for t in $PANELS; do get $t.atlas.bed.gz "$PANEL_DIR"; get $t.atlas.bed.gz.tbi "$PANEL_DIR"; done
-  echo "reference panel in $PANEL_DIR: export COMET_REF_PANEL_DIR=$PANEL_DIR"
+  for t in $PANELS; do echo "reference panel: comet assign --ref-panel $PANEL_DIR/$t.atlas.bed.gz"; done
 fi
 [ "$BAMS" == 1 ] && echo "done: example BAMs in $(pwd)/data/assign" || echo "done"

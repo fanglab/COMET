@@ -4,9 +4,8 @@ Three small postmortem brain PacBio HiFi data sets that run `comet assign` in ~5
 and per-site CpG BEDs of six deeply sequenced postmortem brain samples for `comet dmr` (seconds).
 
 ```bash
-bash example/download_example_data.sh --ref-panel-dir ref_panel   # example BAMs + brain panel from Zenodo
-export COMET_REF_PANEL_DIR=$PWD/ref_panel                          # skip if the panel is already set up
-bash example/run_example.sh 16                                     # threads
+bash example/download_example_data.sh --panel-dir ref_panel   # example BAMs + brain panel from Zenodo
+bash example/run_example.sh ref_panel/brain.atlas.bed.gz 16     # reference panel, threads
 ```
 
 | Path | Content | Walk-through |
@@ -17,4 +16,4 @@ bash example/run_example.sh 16                                     # threads
 | `plot_dmr_region.py` | methylation track plot of a region from per-site BEDs (example only) | |
 
 Paths in the shipped run records are written relative to the repository (`example/...`,
-`$COMET_REF_PANEL_DIR/...`).
+`ref_panel/...`).

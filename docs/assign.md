@@ -16,23 +16,23 @@ each cell type and plots of both.
 ## Usage
 
 ```bash
-comet assign --platform {pacbio,ont} --bam SAMPLE.bam \
-      --assign-thres 0.65 --out OUT_DIR [options]
+comet assign --platform {pacbio,ont} --ref-panel TISSUE.atlas.bed.gz --bam SAMPLE.bam \
+      --assign-thres FLOAT --out OUT_DIR [options]
 ```
 
 More examples:
 
 ```bash
 # PacBio HiFi, brain
-comet assign --platform pacbio --bam sample.bam --assign-thres 0.65 \
+comet assign --platform pacbio --ref-panel brain.atlas.bed.gz --bam sample.bam --assign-thres 0.65 \
       --threads 16 --out results/sample
 
 # ONT, brain, also write 5hmC at CpGs
-comet assign --platform ont --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
+comet assign --platform ont --ref-panel brain.atlas.bed.gz --bam sample.bam --fasta hg38.fa --assign-thres 0.65 \
       --ont-mods 5mCG,5hmCG --threads 16 --out results/sample
 
 # several samples in one call
-comet assign --platform pacbio --assign-thres 0.65 \
+comet assign --platform pacbio --ref-panel brain.atlas.bed.gz --assign-thres 0.65 \
       --bam brain_01.bam,brain_02.bam --threads 16 --out results
 ```
 
@@ -44,10 +44,14 @@ comet assign --platform pacbio --assign-thres 0.65 \
     5mCG_5hmCG, 5mC and 5mC_5hmC. `--ont-mods` selects which of 5mCG (default), 5hmCG, 5mCH and
     5hmCH are written as per-site BEDs. COMET checks the BAM first and stops if a requested
     modification is not present.
-- **Reference panel:**
-  - **Built-in (brain):** download it from Zenodo (see
-    [Installation](../README.md#installation)) and give it with `--ref-panel`, or set `COMET_REF_PANEL_DIR` / `--ref-panel-dir`.
-    - brain (6 cell types): Exc_neuron, Inh_neuron, Astrocyte, Microglia, Oligodendrocyte, OPC
+- **Reference panel (`--ref-panel`):** the cell-type reference methylation panel (atlas) of the
+  tissue, a BED with chrom, start, end and one methylation column per cell type.
+  - **COMET panels** (`<tissue>.atlas.bed.gz`, hg38): download them from Zenodo (see
+    [Installation](../README.md#installation)). They are recognised by name and bring their
+    cell-type names, e.g. brain (6 cell types): Exc_neuron, Inh_neuron, Astrocyte, Microglia,
+    Oligodendrocyte, OPC.
+  - **Other panels:** give the cell-type names in column order with `--cell-types` (otherwise
+    CellType_1..K).
 - **Reference FASTA (`--fasta`):** needed for ONT only (used by modkit).
 
 ## Parameters
@@ -55,6 +59,7 @@ comet assign --platform pacbio --assign-thres 0.65 \
 | Option | Default | |
 |---|---|---|
 | `--platform` | required | `pacbio` or `ont` |
+| `--ref-panel` | required | reference panel (atlas) of the tissue, e.g. `brain.atlas.bed.gz`; bgzipped and tabix-indexed files are used directly, others are indexed once into the output folder |
 | `--bam` | required | modBAM; several samples: comma-separated, or a text file with one BAM per line |
 | `--assign-thres` | required | minimum confidence (posterior θ) for a read to be assigned to a cell type; recommended from our simulations: 0.65 for brain |
 | `--out` | required | output directory |
@@ -66,9 +71,7 @@ comet assign --platform pacbio --assign-thres 0.65 \
 | `--sample` | BAM basename | sample name(s), comma-separated, one per BAM |
 | `--no-plot` | | do not draw the composition and methylation plots |
 | `--meth-plot-samples` | all | samples shown in the cell-type methylation plot |
-| `--cell-types` | brain names | cell-type names in panel column order |
-| `--ref-panel` | `<ref-panel-dir>/brain.atlas.bed.gz` | reference panel (atlas) BED; bgzipped and tabix-indexed files are used directly, others are indexed once into the output folder |
-| `--ref-panel-dir` | `$COMET_REF_PANEL_DIR` | folder holding `brain.atlas.bed.gz(.tbi)`, used when `--ref-panel` is not given |
+| `--cell-types` | COMET panel names, else CellType_1..K | cell-type names in panel column order |
 | `--no-lineage` | | brain: turn off lineage rescue (Neuron = Exc + Inh; Macroglia = Astrocyte + Oligodendrocyte + OPC) |
 | `--lineage-thres` | 0.65 | summed-posterior cutoff for lineage rescue |
 | `--lineage-margin` | 0.10 | margin over the best outside cell type for lineage rescue |
@@ -164,15 +167,14 @@ checks their md5 sums.
 
 ```bash
 cd COMET
-bash example/download_example_data.sh --ref-panel-dir ref_panel   # BAMs + brain panel (613 MB)
-export COMET_REF_PANEL_DIR=$PWD/ref_panel                          # skip if the panel is already set up
-bash example/run_example.sh 16                                     # ~5 min with 16 threads
+bash example/download_example_data.sh --panel-dir ref_panel   # BAMs + brain panel (613 MB)
+bash example/run_example.sh ref_panel/brain.atlas.bed.gz 16  # ~5 min with 16 threads
 ```
 
 `run_example.sh` runs, from `example/`:
 
 ```bash
-comet assign --platform pacbio --assign-thres 0.65 \
+comet assign --platform pacbio --ref-panel ../ref_panel/brain.atlas.bed.gz --assign-thres 0.65 \
       --bam data/assign/brain_01.bam,data/assign/brain_02.bam,data/assign/brain_03.bam \
       --threads 16 --out output/assign
 ```

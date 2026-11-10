@@ -14,12 +14,12 @@ cat <<EOF
 comet test (COMET v$VERSION) -- check the installation and reproduce the test results
 
 Usage:
-  comet test [--out DIR] [--threads N] [--ref-panel-dir DIR] [--env-only]
+  comet test [--out DIR] [--threads N] [--ref-panel FILE] [--env-only]
 
 Steps:
   1. environment  required tools and Python packages (with versions), Arial font
   2. comet dmr    AD-specific microglia DMRs on the bundled per-site BEDs (chr15:73.5-75.5 Mb, seconds)
-  3. download     test BAMs (1.3 GB) and, if not already set up, the brain reference panel (613 MB)
+  3. download     test BAMs (1.3 GB) and, unless given with --ref-panel, the brain reference panel (613 MB)
                   from Zenodo (DOI 10.5281/zenodo.24064938), md5-checked; files already present are not downloaded again
   4. comet assign three postmortem brain samples (PacBio HiFi, 0.5X; ~5 min with 16 threads)
 Each step reports PASS or FAIL; the run stops at the first failure.
@@ -27,19 +27,19 @@ Each step reports PASS or FAIL; the run stops at the first failure.
 Options:
   --out DIR             working folder for the downloads and test outputs [comet_test]
   --threads INT         threads for comet assign / dmr [4]
-  --ref-panel-dir DIR   folder with brain.atlas.bed.gz(.tbi) [\$COMET_REF_PANEL_DIR, else <install>/share/comet/ref_panel;
-                        if it holds no brain panel, the panel is downloaded into DIR/ref_panel]
+  --ref-panel FILE      brain.atlas.bed.gz already downloaded (tabix-indexed); otherwise it is downloaded
+                        into OUT/ref_panel
   --env-only            only step 1 (no download, no test runs)
   -h, --help            show this help
 EOF
 }
 
-OUT=comet_test THREADS=4 REF_DIR=${COMET_REF_PANEL_DIR:-} ENV_ONLY=0
+OUT=comet_test THREADS=4 REF= ENV_ONLY=0
 while [ $# -gt 0 ]; do
   case $1 in
     --out) OUT=$2; shift 2 ;;
     --threads) THREADS=$2; shift 2 ;;
-    --ref-panel-dir) REF_DIR=$2; shift 2 ;;
+    --ref-panel) REF=$2; shift 2 ;;
     --env-only) ENV_ONLY=1; shift ;;
     -h|--help) usage; exit 0 ;;
     -v|--version) echo "comet $VERSION"; exit 0 ;;
@@ -117,7 +117,7 @@ stop_if_failed "the environment" "install the missing software (see README: Requ
 
 mkdir -p "$OUT"
 OUT=$(cd "$OUT" && pwd)
-if [ -n "$REF_DIR" ]; then mkdir -p "$REF_DIR"; REF_DIR=$(cd "$REF_DIR" && pwd); fi
+[ -z "$REF" ] || [ ! -e "$REF" ] || REF=$(cd "$(dirname "$REF")" && pwd)/$(basename "$REF")
 
 # ---------------------------------------------------------------- 2. comet dmr
 echo; echo "[2/4] comet dmr (bundled test data)"
@@ -175,18 +175,19 @@ get() {   # get FILE DEST_DIR
   fi
 }
 for s in brain_01 brain_02 brain_03; do get $s.bam "$DATA"; get $s.bam.csi "$DATA"; done
-[ -n "$REF_DIR" ] || REF_DIR=$(cd "$BIN/.." && pwd)/share/comet/ref_panel
-if [ -s "$REF_DIR/brain.atlas.bed.gz" ] && [ -s "$REF_DIR/brain.atlas.bed.gz.tbi" ]; then
-  pass "brain reference panel in $REF_DIR"
+if [ -n "$REF" ]; then
+  [ -s "$REF" ] && { [ -s "$REF.tbi" ] || [ -s "$REF.csi" ]; } && pass "brain reference panel $REF" \
+    || fail "--ref-panel $REF: file or its tabix index not found"
 else
-  REF_DIR=$OUT/ref_panel; mkdir -p "$REF_DIR"
-  get brain.atlas.bed.gz "$REF_DIR"; get brain.atlas.bed.gz.tbi "$REF_DIR"
+  mkdir -p "$OUT/ref_panel"
+  get brain.atlas.bed.gz "$OUT/ref_panel"; get brain.atlas.bed.gz.tbi "$OUT/ref_panel"
+  REF=$OUT/ref_panel/brain.atlas.bed.gz
 fi
 stop_if_failed "the download"
 
 # ---------------------------------------------------------------- 4. comet assign
 echo; echo "[4/4] comet assign (3 PacBio HiFi brain samples; this takes a few minutes)"
-if comet assign --platform pacbio --assign-thres 0.65 --ref-panel-dir "$REF_DIR" \
+if comet assign --platform pacbio --ref-panel "$REF" --assign-thres 0.65 \
      --bam "$DATA/brain_01.bam,$DATA/brain_02.bam,$DATA/brain_03.bam" \
      --threads "$THREADS" --out "$OUT/assign" \
      > "$OUT/assign.log" 2>&1; then
