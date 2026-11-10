@@ -32,7 +32,7 @@ conda env create -f COMET/environment.yml && conda activate comet
 export PATH=$PWD/COMET/bin:$PATH
 ```
 
-**Download the reference panel** (hg38, brain, 613 MB; Zenodo DOI:
+**Download the reference panel** (hg38; Zenodo DOI:
 [10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) into one folder and point COMET to it:
 ```bash
 bash COMET/example/download_example_data.sh --ref-panel-dir /path/to/ref_panel --panels-only
