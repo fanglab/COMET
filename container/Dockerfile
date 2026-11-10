@@ -5,7 +5,7 @@ FROM mambaorg/micromamba:1.5.10
 LABEL org.opencontainers.image.title="comet-meth" \
       org.opencontainers.image.description="COMET: read-level cell-type assignment for long-read methylation data" \
       org.opencontainers.image.version="1.1.0-brain" \
-      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.licenses="CC-BY-NC-SA-4.0" \
       org.opencontainers.image.source="https://github.com/fanglab/COMET"
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml /tmp/environment.yml

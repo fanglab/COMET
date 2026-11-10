@@ -50,8 +50,8 @@ test:
 about:
   home: https://github.com/fanglab/COMET
   dev_url: https://github.com/fanglab/COMET
-  license: MIT
-  license_family: MIT
+  license: CC-BY-NC-SA-4.0
+  license_family: OTHER
   license_file: LICENSE
   summary: Read-level cell-type assignment and cell-type-resolved DMR analysis for long-read methylation data
   description: |
