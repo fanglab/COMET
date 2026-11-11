@@ -14,7 +14,8 @@ cell-type reference methylation panel.
 
 **Bioconda**
 ```bash
-conda install -c conda-forge -c bioconda comet-meth
+conda create -n comet -c conda-forge -c bioconda comet-meth
+conda activate comet
 ```
 
 **Container** (Docker)
