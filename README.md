@@ -52,8 +52,8 @@ everything it needs:
 | metilene, perl | 0.2.9 | `comet dmr` |
 | samtools, bedtools, htslib (bgzip, tabix) | ≥ 1.15, ≥ 2.29, ≥ 1.15 | `comet assign` and `comet dmr` |
 
-**Test the installation** with `comet test`. It downloads ~1.9 GB, then takes ~5 min with
-16 threads. It runs four steps:
+**Test the installation** with `comet test`. It downloads ~1.9 GB and takes ~10 min with
+16 threads, including the download. It runs four steps:
 
 1. Checks the required tools and Python packages and prints their versions.
 2. Runs `comet dmr` on the test BEDs bundled with COMET.
@@ -142,11 +142,12 @@ of each cell type's reads.
 **Input:** per-site methylation BED files (chrom, start, end, n_mod, n_total), e.g. the cell-type
 BEDs written by `comet assign`. Give them as two groups: `--target` and `--background`.
 
-**Usage:**
+**Usage:** with the example BEDs in `COMET/example/data/dmr/`:
 
 ```bash
-comet dmr --target AD_1.Microglia.CG.bed.gz,AD_2.Microglia.CG.bed.gz --target-name AD_Microglia \
-      --background MCI_1.Microglia.CG.bed.gz,MCI_2.Microglia.CG.bed.gz,NCI_1.Microglia.CG.bed.gz,NCI_2.Microglia.CG.bed.gz \
+d=COMET/example/data/dmr/brain_deep
+comet dmr --target ${d}_AD_1.Microglia.CG.bed.gz,${d}_AD_2.Microglia.CG.bed.gz --target-name AD_Microglia \
+      --background ${d}_MCI_1.Microglia.CG.bed.gz,${d}_MCI_2.Microglia.CG.bed.gz,${d}_NCI_1.Microglia.CG.bed.gz,${d}_NCI_2.Microglia.CG.bed.gz \
       --background-name MCI_NCI_Microglia --dmr-diff 0.2 --dmr-level individual --out output/dmr
 ```
 
