@@ -16,5 +16,5 @@ COMET 1.1.0 with the brain reference panel.
 - `comet dmr` example and `comet test` step: an AD-specific microglia DMR on per-site CpG BEDs of
   six deeply sequenced postmortem brain samples (AD, MCI, NCI; chr15:73.5-75.5 Mb), bundled in
   `example/data/dmr/`. `plot_dmr_region.py` pools several BEDs given in one track.
-- Installation with Bioconda (`comet-meth`), the Docker image `ghcr.io/fanglab/comet-meth`, from
-  source, or with the prebuilt package `COMET-1.1.0-linux-x86_64.tar.gz` (no conda needed).
+- Installation with Bioconda (`comet-meth`), the Docker image `ghcr.io/fanglab/comet-meth` or from
+  source.

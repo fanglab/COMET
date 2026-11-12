@@ -33,16 +33,6 @@ conda env create -f COMET/environment.yml && conda activate comet
 export PATH=$PWD/COMET/bin:$PATH
 ```
 
-**Prebuilt package** (Linux x86-64, no conda needed): download `COMET-1.1.0-linux-x86_64.tar.gz`
-(~600 MB; COMET with all required tools) from the
-[v1.1.0 release](https://github.com/fanglab/COMET/releases/tag/v1.1.0), then:
-```bash
-tar -xzf COMET-1.1.0-linux-x86_64.tar.gz
-source COMET/env/bin/activate && conda-unpack   # conda-unpack only once, after unpacking
-export PATH=$PWD/COMET/bin:$PATH
-```
-In a new shell, run `source COMET/env/bin/activate` and the `export` line again.
-
 **Download the reference panel** (hg38; Zenodo DOI:
 [10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) and give it to COMET with `--ref-panel`:
 ```bash
@@ -51,8 +41,8 @@ bash COMET/example/download_example_data.sh --panel-dir ref_panel --panels-only 
 
 ## Requirements and Test
 
-COMET is tested on Linux (x86-64). Bioconda, the container, the prebuilt package and
-`environment.yml` install everything it needs:
+COMET is tested on Linux (x86-64). Bioconda, the container and `environment.yml` install
+everything it needs:
 
 | Software | Version | Used by |
 |---|---|---|
