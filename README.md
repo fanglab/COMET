@@ -36,6 +36,7 @@ export PATH=$PWD/COMET/bin:$PATH
 **Download the reference panel** (hg38; Zenodo DOI:
 [10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) and give it to COMET with `--ref-panel`:
 ```bash
+git clone https://github.com/fanglab/COMET.git   # Bioconda or Docker installation: the script is in the repository
 bash COMET/example/download_example_data.sh --panel-dir ref_panel --panels-only # or download from the Zenodo page
 ```
 

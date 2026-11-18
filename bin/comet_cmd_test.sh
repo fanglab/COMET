@@ -36,6 +36,10 @@ EOF
 
 OUT=comet_test THREADS=4 REF= ENV_ONLY=0
 while [ $# -gt 0 ]; do
+  case $1 in  # an option given without its value
+    --out|--threads|--ref-panel)
+      [ $# -ge 2 ] && [[ $2 != --* ]] || { echo "ERROR: $1 requires a value (see comet test --help)" >&2; exit 1; } ;;
+  esac
   case $1 in
     --out) OUT=$2; shift 2 ;;
     --threads) THREADS=$2; shift 2 ;;

@@ -66,6 +66,11 @@ KEEP_TMP=0
 [ $# -eq 0 ] && { usage; exit 1; }
 CMDLINE="comet dmr$(printf ' %q' "$@")"
 while [ $# -gt 0 ]; do
+  case $1 in  # an option given without its value
+    --target|--background|--out|--dmr-level|--target-name|--background-name|--min-cpg|--max-gap|\
+    --min-depth|--dmr-diff|--alpha|--name|--threads|--metilene)
+      [ $# -ge 2 ] && [[ $2 != --* ]] || die "$1 requires a value (see comet dmr --help)" ;;
+  esac
   case $1 in
     --target) TARGET=$2; shift 2 ;;
     --background) BACKGROUND=$2; shift 2 ;;

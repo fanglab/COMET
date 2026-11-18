@@ -89,6 +89,13 @@ PASS=()   # options handed on to the per-sample runs of a multi-BAM call
 [ $# -eq 0 ] && { usage; exit 1; }
 CMDLINE="comet assign$(printf ' %q' "$@")"
 while [ $# -gt 0 ]; do
+  case $1 in  # an option given without its value
+    --platform|--bam|--ref-panel|--assign-thres|--out|--fasta|--output-format|--ml-cutoff|--threads|\
+    --sample|--cell-types|--lineage-thres|--lineage-margin|--min-cpg|--min-read-len|--chunk-size|\
+    --pn-table|--hmc-cutoff|--pileup-threshold|--ch-pileup-threshold|--ont-mods|--modkit|--step|\
+    --chunk-id|--meth-plot-samples)
+      [ $# -ge 2 ] && [[ $2 != --* ]] || die "$1 requires a value (see comet assign --help)" ;;
+  esac
   case $1 in
     --bam|--out|--sample|--meth-plot-samples|--no-plot|-h|--help|-v|--version) ;;
     -*) PASS+=("$1"); case ${2:-} in ""|--*) ;; *) PASS+=("$2") ;; esac ;;
