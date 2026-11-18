@@ -1,5 +1,5 @@
 {% set name = "comet-meth" %}
-{% set version = "1.1.0" %}
+{% set version = "1.1.1" %}
 
 package:
   name: {{ name }}
@@ -40,6 +40,7 @@ test:
     - comet_assign.py --help
     - comet_summarize.py --help
     - comet_plot_assign.py --help
+    - comet_plot_dmr.py --help
     - comet dmr --help
     - comet test --help
     - comet test --env-only

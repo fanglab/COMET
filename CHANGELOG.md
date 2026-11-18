@@ -4,7 +4,7 @@ All notable changes to COMET (package `comet-meth`) are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.1.1] - 2026-11-18
 
 - `comet assign`, `comet dmr` and `comet test`: an option given without its value (e.g.
   `comet assign --bam`) now stops with `ERROR: --bam requires a value`, instead of a shell error.

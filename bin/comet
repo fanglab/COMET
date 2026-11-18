@@ -2,7 +2,7 @@
 # COMET: Cell-of-Origin from METhylation -- command dispatcher.
 set -euo pipefail
 
-VERSION=1.1.0
+VERSION=1.1.1
 BIN=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)
 export COMET_VERSION=$VERSION
 
