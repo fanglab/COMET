@@ -131,18 +131,34 @@ microglia and methylated in MCI and NCI microglia:
 
 <img src="../example/output/dmr/AD_microglia.tracks.png" width="520">
 
-The tracks show per-CpG microglia methylation over chr15:74,174,700-74,175,500 (CpGs with ≥ 1 read).
+The tracks show per-CpG microglia methylation over chr15:74,174,700-74,175,500 (CpGs with ≥ 1 read);
+the significant DMRs are shaded.
 
-`comet dmr` does not draw plots. This one comes from `example/plot_dmr_region.py`, which works
-for any region and any per-site BEDs from `comet assign`:
+### Plot a region
+
+`comet dmr` does not draw plots. `comet_plot_dmr.py` (installed with COMET) draws these tracks
+from a `comet dmr` output folder, for any region:
 
 ```bash
-cd COMET/example
-# per-CpG tracks, one --track LABEL=BED per track, top to bottom
-# (several comma-separated BEDs in one track are pooled)
-python3 plot_dmr_region.py --region chr15:74,174,700-74,175,500 --min-depth 1 \
-      --track AD_1=data/dmr/brain_deep_AD_1.Microglia.CG.bed.gz \
-      --track AD_2=data/dmr/brain_deep_AD_2.Microglia.CG.bed.gz \
-      ...
-      --out output/dmr/AD_microglia.tracks
+# one track per input file (target first), significant DMRs shaded
+comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/AD_microglia.tracks
+
+# the N-th significant DMR (row N of *.sig.tsv) with 300 bp on each side
+comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --out output/dmr/dmr1.tracks
+
+# one pooled track per group (--target-name, --background-name)
+comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --pool --out output/dmr/dmr1.pooled
 ```
+
+| Option | Description |
+|---|---|
+| `--dmr-dir DIR` | `--out` folder of `comet dmr` (reads the input files from `02.run_info/input_files.tsv`) |
+| `--region chr:start-end` | region to plot |
+| `--dmr N` | plot the N-th significant DMR, with `--flank` bp on each side [300] |
+| `--pool` | one track per group, pooling the files of each group |
+| `--track LABEL=FILE[,FILE...]` | a track from any per-site BEDs (e.g. from `comet assign`), with or without `--dmr-dir`; several files are pooled |
+| `--min-depth INT` | minimum reads per CpG [1] |
+| `--out PREFIX` | writes PREFIX.pdf and PREFIX.png |
+
+The input BEDs are read from the paths given to `comet dmr`, so run the plot from the same folder
+(or use `--track`).
