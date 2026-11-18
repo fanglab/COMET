@@ -167,11 +167,10 @@ The region is unmethylated in AD microglia and methylated in MCI and NCI microgl
 
 <img src="example/output/dmr/AD_microglia.tracks.png" width="420">
 
-Plot any region or DMR from the `comet dmr` output with `comet_plot_dmr.py`:
+Plot any region from the `comet dmr` output with `comet_plot_dmr.py`:
 
 ```bash
 comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/AD_microglia.tracks
-comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --out output/dmr/dmr1.tracks   # 1st significant DMR ± 300 bp
 ```
 
 ➡ **[comet dmr: full usage](docs/dmr.md)**
