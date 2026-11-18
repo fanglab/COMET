@@ -129,7 +129,7 @@ Expected results: [`example/output/dmr/`](../example/output/dmr/). 3 DMRs pass
 Two adjacent DMRs cover chr15:74,174,956-74,175,254 (16 CpGs). The region is unmethylated in AD
 microglia and methylated in MCI and NCI microglia:
 
-<img src="../example/output/dmr/region.png" width="520">
+<img src="../example/output/dmr/dmr_region.png" width="520">
 
 The tracks show per-CpG microglia methylation over chr15:74,174,700-74,175,500 (CpGs with ≥ 1 read).
 
@@ -140,7 +140,7 @@ from a `comet dmr` output folder, for any region:
 
 ```bash
 # one track per input file (target first)
-comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/region
+comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/dmr_region
 
 # the N-th significant DMR (row N of *.sig.tsv) with 300 bp on each side
 comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --out output/dmr/dmr1

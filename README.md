@@ -165,12 +165,12 @@ The six methylation columns show DMR methylation levels. The target (AD microgli
 
 The region is unmethylated in AD microglia and methylated in MCI and NCI microglia:
 
-<img src="example/output/dmr/region.png" width="420">
+<img src="example/output/dmr/dmr_region.png" width="420">
 
 Plot any region from the `comet dmr` output with `comet_plot_dmr.py`:
 
 ```bash
-comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/region
+comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/dmr_region
 ```
 
 ➡ **[comet dmr: full usage](docs/dmr.md)**
