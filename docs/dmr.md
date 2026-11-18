@@ -129,7 +129,7 @@ Expected results: [`example/output/dmr/`](../example/output/dmr/). 3 DMRs pass
 Two adjacent DMRs cover chr15:74,174,956-74,175,254 (16 CpGs). The region is unmethylated in AD
 microglia and methylated in MCI and NCI microglia:
 
-<img src="../example/output/dmr/AD_microglia.tracks.png" width="520">
+<img src="../example/output/dmr/region.png" width="520">
 
 The tracks show per-CpG microglia methylation over chr15:74,174,700-74,175,500 (CpGs with ≥ 1 read);
 the significant DMRs are shaded.
@@ -141,13 +141,13 @@ from a `comet dmr` output folder, for any region:
 
 ```bash
 # one track per input file (target first), significant DMRs shaded
-comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/AD_microglia.tracks
+comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/region
 
 # the N-th significant DMR (row N of *.sig.tsv) with 300 bp on each side
-comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --out output/dmr/dmr1.tracks
+comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --out output/dmr/dmr1
 
 # one pooled track per group (--target-name, --background-name)
-comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --pool --out output/dmr/dmr1.pooled
+comet_plot_dmr.py --dmr-dir output/dmr --dmr 1 --pool --out output/dmr/dmr1_pooled
 ```
 
 | Option | Description |

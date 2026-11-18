@@ -9,7 +9,7 @@
 #   - comet assign: cell-type composition and cell-type methylation of the three samples
 #   - comet dmr: AD-specific microglia DMRs, including chr15:74,174,956-74,175,254 (16 CpGs,
 #     unmethylated in AD microglia and methylated in MCI and NCI microglia);
-#     output/dmr/AD_microglia.tracks.pdf shows the microglia methylation of the six samples there
+#     output/dmr/region.pdf shows the microglia methylation of the six samples there
 #
 # usage: bash download_example_data.sh --panel-dir PANELS   (once: example BAMs + brain panel)
 #        bash run_example.sh PANELS/brain.atlas.bed.gz [THREADS]
@@ -44,4 +44,4 @@ comet dmr --target ${D}_AD_1.Microglia.CG.bed.gz,${D}_AD_2.Microglia.CG.bed.gz -
 cut -f1-4,20-25 output/dmr/01.dmr/AD_Microglia_vs_MCI_NCI_Microglia.metilene.sig.tsv
 
 # 4. methylation tracks of the six samples' microglia around the region, DMRs shaded
-comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/AD_microglia.tracks
+comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/region
