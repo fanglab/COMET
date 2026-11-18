@@ -12,8 +12,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follo
   does not need the repository.
 - Installation with Bioconda or from source only; the Docker image is no longer built.
 - `comet_plot_dmr.py`: methylation tracks of a region (`--region`) or of the N-th significant DMR
-  (`--dmr N`) from a `comet dmr` output folder, one track per input file or per group (`--pool`),
-  significant DMRs shaded. Replaces `example/plot_dmr_region.py`.
+  (`--dmr N`) from a `comet dmr` output folder, one track per input file or per group (`--pool`).
+  Replaces `example/plot_dmr_region.py`.
 
 ## [1.1.0] - 2026-11-18
 

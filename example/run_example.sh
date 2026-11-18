@@ -43,5 +43,5 @@ comet dmr --target ${D}_AD_1.Microglia.CG.bed.gz,${D}_AD_2.Microglia.CG.bed.gz -
       --background-name MCI_NCI_Microglia --dmr-diff 0.2 --dmr-level individual --threads $T --out output/dmr
 cut -f1-4,20-25 output/dmr/01.dmr/AD_Microglia_vs_MCI_NCI_Microglia.metilene.sig.tsv
 
-# 4. methylation tracks of the six samples' microglia around the region, DMRs shaded
+# 4. methylation tracks of the six samples' microglia around the region
 comet_plot_dmr.py --dmr-dir output/dmr --region chr15:74,174,700-74,175,500 --out output/dmr/region

@@ -7,8 +7,7 @@ usage: comet_plot_dmr.py --dmr-dir DMR_OUT {--region chr:start-end | --dmr N [--
 
 --dmr-dir: the --out folder of comet dmr. One track per input file (target files first, then
 background files, as listed in 02.run_info/input_files.tsv), labelled with the sample names
-without their shared prefix and suffix; the significant DMRs (01.dmr/*.sig.bed) in the region
-are shaded. --dmr N plots the N-th significant DMR (row N of *.sig.tsv) with --flank bp on each
+without their shared prefix and suffix. --dmr N plots the N-th significant DMR (row N of *.sig.tsv) with --flank bp on each
 side; --pool draws one pooled track per group instead of one per file.
 --track: one track per --track (top to bottom), for any per-site BEDs; several comma-separated
 FILEs in one track are pooled. Can be added to --dmr-dir tracks.
@@ -29,7 +28,6 @@ from matplotlib import font_manager
 import matplotlib.pyplot as plt
 
 COLOR = '#4C72B0'   # matplotlib / seaborn default blue
-DMR_COLOR = '#F2C14E'
 
 
 def die(msg):
@@ -149,7 +147,6 @@ def main():
         die('region end must be larger than start')
 
     tracks = []   # (label, [files])
-    dmrs = []
     if a.dmr_dir:
         rows = dmr_dir_inputs(a.dmr_dir)
         if a.pool:
@@ -159,11 +156,6 @@ def main():
         else:
             for name, r in zip(short_names([r['sample'] for r in rows]), rows):
                 tracks.append((name, [r['file']]))
-        with open(dmr_file(a.dmr_dir, 'bed')) as fh:
-            for line in fh:
-                f = line.split('\t')
-                if f[0] == chrom and int(f[2]) > start and int(f[1]) < end:
-                    dmrs.append((int(f[1]), int(f[2])))
     for t in a.track:
         if '=' not in t:
             die('--track must be LABEL=FILE[,FILE...]: %s' % t)
@@ -176,8 +168,6 @@ def main():
                              gridspec_kw={'hspace': 0.25})
     axes = axes[:, 0]
     for ax, (label, paths) in zip(axes, tracks):
-        for s, e in dmrs:
-            ax.axvspan(s, e, color=DMR_COLOR, alpha=0.35, lw=0)
         x, y = profile(paths, chrom, start, end, a.min_depth)
         ax.plot(x, y, color=COLOR, lw=0.8)
         ax.fill_between(x, y, 0, color=COLOR, alpha=0.6, lw=0)
@@ -200,7 +190,7 @@ def main():
         os.makedirs(d, exist_ok=True)
     for ext in ('pdf', 'png'):
         fig.savefig('%s.%s' % (a.out, ext))
-    print('%s.pdf / .png: %d tracks, %s:%d-%d, %d DMR(s) shaded' % (a.out, n, chrom, start, end, len(dmrs)))
+    print('%s.pdf / .png: %d tracks, %s:%d-%d' % (a.out, n, chrom, start, end))
 
 
 if __name__ == '__main__':
