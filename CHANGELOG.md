@@ -4,7 +4,7 @@ All notable changes to COMET (package `comet-meth`) are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/).
 
-## [1.1.0] - 2026-11-10
+## [1.1.0] - 2026-11-18
 
 COMET 1.1.0 with the brain reference panel.
 

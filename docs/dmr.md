@@ -2,7 +2,7 @@
 
 `comet dmr` calls differentially methylated regions (DMRs) between a target group and a
 background group of per-site methylation BED files with
-[metilene](https://www.bioinf.uni-leipzig.de/Software/metilene/), and filters them by
+[metilene](https://legacy.bioinf.uni-leipzig.de/Software/metilene/), and filters them by
 methylation difference, CpG count and depth. A typical use is one cell type across two donor
 groups, using the cell-type BEDs from [`comet assign`](assign.md).
 
