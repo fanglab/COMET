@@ -1,5 +1,5 @@
-# Runtime environment for COMET (comet-meth), used for the container build and for
-# installing from source:  conda env create -f environment.yml
+# Runtime environment for COMET (comet-meth), used for installing from source:
+#   conda env create -f environment.yml
 # The numerical stack (python, numpy, pandas, scipy) and modkit are pinned to the versions
 # used to validate the release against the manuscript pipeline, so posteriors reproduce to
 # the last digit.

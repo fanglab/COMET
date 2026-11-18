@@ -8,8 +8,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follo
 
 - `comet assign`, `comet dmr` and `comet test`: an option given without its value (e.g.
   `comet assign --bam`) now stops with `ERROR: --bam requires a value`, instead of a shell error.
-- README: the reference panel download shows the `git clone` step for Bioconda and Docker
-  installations.
+- README: the reference panel is downloaded with `curl` from Zenodo, so a Bioconda installation
+  does not need the repository.
+- Installation with Bioconda or from source only; the Docker image is no longer built.
 
 ## [1.1.0] - 2026-11-18
 

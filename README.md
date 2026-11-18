@@ -18,14 +18,6 @@ conda create -n comet -c conda-forge -c bioconda comet-meth
 conda activate comet
 ```
 
-**Container** (Docker)
-```bash
-docker pull ghcr.io/fanglab/comet-meth:1.1.0
-docker run --rm -v /path/to/data:/data -v /path/to/ref_panel:/ref_panel ghcr.io/fanglab/comet-meth:1.1.0 \
-      comet assign --ref-panel /ref_panel/brain.atlas.bed.gz --bam /data/sample.bam ... \
-      --out /data/output   # mount every folder read or written
-```
-
 **From source**
 ```bash
 git clone https://github.com/fanglab/COMET.git
@@ -36,14 +28,14 @@ export PATH=$PWD/COMET/bin:$PATH
 **Download the reference panel** (hg38; Zenodo DOI:
 [10.5281/zenodo.24064938](https://doi.org/10.5281/zenodo.24064938)) and give it to COMET with `--ref-panel`:
 ```bash
-git clone https://github.com/fanglab/COMET.git   # Bioconda or Docker installation: the script is in the repository
-bash COMET/example/download_example_data.sh --panel-dir ref_panel --panels-only # or download from the Zenodo page
+mkdir -p ref_panel
+curl -fL -o ref_panel/brain.atlas.bed.gz     "https://zenodo.org/records/24064938/files/brain.atlas.bed.gz?download=1"
+curl -fL -o ref_panel/brain.atlas.bed.gz.tbi "https://zenodo.org/records/24064938/files/brain.atlas.bed.gz.tbi?download=1"
 ```
 
 ## Requirements and Test
 
-COMET is tested on Linux (x86-64). Bioconda, the container and `environment.yml` install
-everything it needs:
+COMET is tested on Linux (x86-64). Bioconda and `environment.yml` install everything it needs:
 
 | Software | Version | Used by |
 |---|---|---|
